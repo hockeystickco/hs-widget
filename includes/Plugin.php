@@ -4,13 +4,13 @@
  *
  *
  * @package   WP-Reactivate
- * @author    Pangolin
+ * @author    Hockeystick
  * @license   GPL-3.0
  * @link      https://gopangolin.com
- * @copyright 2017 Pangolin (Pty) Ltd
+ * @copyright 2020 Hockeystick
  */
 
-namespace Pangolin\WPR;
+namespace Hockeystick\WPR;
 
 /**
  * @subpackage Plugin
@@ -26,7 +26,7 @@ class Plugin {
 	 *
 	 * @var      string
 	 */
-	protected $plugin_slug = 'wp-reactivate';
+	protected $plugin_slug = 'hockeystick-widget';
 
 	/**
 	 * Instance of this class.
@@ -74,7 +74,7 @@ class Plugin {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-		add_option( 'wpr_example_setting' );
+		add_option( 'hs_example_setting' );
 	}
 
 	/**

@@ -4,13 +4,13 @@
  *
  *
  * @package   WP-Reactivate
- * @author    Pangolin
+ * @author    Hockeystick
  * @license   GPL-3.0
  * @link      https://gopangolin.com
- * @copyright 2017 Pangolin (Pty) Ltd
+ * @copyright 2020 Hockeystick
  */
 
-namespace Pangolin\WPR;
+namespace Hockeystick\WPR;
 
 /**
  * @subpackage Admin
@@ -129,7 +129,7 @@ class Admin {
 
 			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', dirname( __FILE__ ) ), array( 'jquery' ), $this->version );
 
-			wp_localize_script( $this->plugin_slug . '-admin-script', 'wpr_object', array(
+			wp_localize_script( $this->plugin_slug . '-admin-script', 'hs_object', array(
 				'api_nonce'   => wp_create_nonce( 'wp_rest' ),
 				'api_url'	  => rest_url( $this->plugin_slug . '/v1/' ),
 				)
@@ -161,7 +161,7 @@ class Admin {
 	 * @since    1.0.0
 	 */
 	public function display_plugin_admin_page() {
-		?><div id="wp-reactivate-admin"></div><?php
+		?><div id="hockeystick-widget-admin"></div><?php
 	}
 
 	/**

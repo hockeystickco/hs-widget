@@ -4,13 +4,13 @@
  *
  *
  * @package   WP-Reactivate
- * @author    Pangolin
+ * @author    Hockeystick
  * @license   GPL-3.0
  * @link      https://gopangolin.com
- * @copyright 2017 Pangolin (Pty) Ltd
+ * @copyright 2020 Hockeystick
  */
 
-namespace Pangolin\WPR;
+namespace Hockeystick\WPR;
 
 /**
  * @subpackage Shortcode
@@ -55,7 +55,7 @@ class Shortcode {
 		$this->plugin_slug = $plugin->get_plugin_slug();
 		$this->version = $plugin->get_plugin_version();
 
-		add_shortcode( 'wp-reactivate', array( $this, 'shortcode' ) );
+		add_shortcode( 'hockeystick-widget', array( $this, 'shortcode' ) );
 	}
 
 
@@ -78,21 +78,21 @@ class Shortcode {
 		wp_register_style( $this->plugin_slug . '-shortcode-style', plugins_url( 'assets/css/shortcode.css', dirname( __FILE__ ) ), $this->version );
 	}
 
-	public function shortcode( $atts ) {
+	public function shortcode( $atts, $content ) {
 		wp_enqueue_script( $this->plugin_slug . '-shortcode-script' );
 		wp_enqueue_style( $this->plugin_slug . '-shortcode-style' );
 
-		$object_name = 'wpr_object_' . uniqid();
+		$object_name = 'hs_object_' . uniqid();
 
 		$object = shortcode_atts( array(
 			'title'       => 'Hello world',
 			'api_nonce'   => wp_create_nonce( 'wp_rest' ),
 			'api_url'	  => rest_url( $this->plugin_slug . '/v1/' ),
-		), $atts, 'wp-reactivate' );
+		), $atts, 'hockeystick-widget' );
 
 		wp_localize_script( $this->plugin_slug . '-shortcode-script', $object_name, $object );
 
-		$shortcode = '<div class="wp-reactivate-shortcode" data-object-id="' . $object_name . '"></div>';
+		$shortcode = '<span class="hockeystick-widget-shortcode" data-object-id="' . $object_name . '"></span>';
 		return $shortcode;
 	}
 }

@@ -3,27 +3,20 @@
  * WP-Reactivate
  *
  *
- * @package   WP-Reactivate
- * @author    Pangolin
- * @license   GPL-3.0
- * @link      https://gopangolin.com
- * @copyright 2017 Pangolin (Pty) Ltd
+ * @package   Hockeystick Widget
+ * @author    Hockeystick
  *
  * @wordpress-plugin
- * Plugin Name:       WP-Reactivate
- * Plugin URI:        https://gopangolin.com
- * Description:       React boilerplate for WordPress plugins
- * Version:           1.0.2
- * Author:            pangolin
- * Author URI:        https://gopangolin.com
- * Text Domain:       wp-reactivate
- * License:           GPL-3.0
- * License URI:       https://www.gnu.org/licenses/gpl-3.0.txt
- * Domain Path:       /languages
+ * Plugin Name:       Hockeystick Widget
+ * Description:       Widget that displays a company's information from Hockeystick.
+ * Version:           1.0.0
+ * Author:            Hockeystick
+ * Author URI:        https://hockeystick.co
+ * Text Domain:       hs-widget
  */
 
 
-namespace Pangolin\WPR;
+namespace Hockeystick\WPR;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -77,11 +70,11 @@ spl_autoload_register(function ($class) {
  */
 function init() {
 	$wpr = Plugin::get_instance();
-	$wpr_shortcode = Shortcode::get_instance();
-	$wpr_admin = Admin::get_instance();
-	$wpr_rest = Endpoint\Example::get_instance();
+	$hs_shortcode = Shortcode::get_instance();
+	$hs_admin = Admin::get_instance();
+	$hs_rest = Endpoint\Example::get_instance();
 }
-add_action( 'plugins_loaded', 'Pangolin\\WPR\\init' );
+add_action( 'plugins_loaded', 'Hockeystick\\WPR\\init' );
 
 
 
@@ -93,11 +86,10 @@ add_action( 'plugins_loaded', 'Pangolin\\WPR\\init' );
 function widget_init() {
 	return register_widget( new Widget );
 }
-add_action( 'widgets_init', 'Pangolin\\WPR\\widget_init' );
+add_action( 'widgets_init', 'Hockeystick\\WPR\\widget_init' );
 
 /**
  * Register activation and deactivation hooks
  */
-register_activation_hook( __FILE__, array( 'Pangolin\\WPR\\Plugin', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'Pangolin\\WPR\\Plugin', 'deactivate' ) );
-
+register_activation_hook( __FILE__, array( 'Hockeystick\\WPR\\Plugin', 'activate' ) );
+register_deactivation_hook( __FILE__, array( 'Hockeystick\\WPR\\Plugin', 'deactivate' ) );

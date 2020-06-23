@@ -4,14 +4,14 @@
  *
  *
  * @package   WP-Reactivate
- * @author    Pangolin
+ * @author    Hockeystick
  * @license   GPL-3.0
  * @link      https://gopangolin.com
- * @copyright 2017 Pangolin (Pty) Ltd
+ * @copyright 2020 Hockeystick
  */
 
-namespace Pangolin\WPR\Endpoint;
-use Pangolin\WPR;
+namespace Hockeystick\WPR\Endpoint;
+use Hockeystick\WPR;
 
 /**
  * @subpackage REST_Controller
@@ -117,7 +117,7 @@ class Example {
      * @return WP_Error|WP_REST_Request
      */
     public function get_example( $request ) {
-        $example_option = get_option( 'wpr_example_setting' );
+        $example_option = get_option( 'hs_example_setting' );
 
         // Don't return false if there is no option
         if ( ! $example_option ) {
@@ -140,7 +140,7 @@ class Example {
      * @return WP_Error|WP_REST_Request
      */
     public function update_example( $request ) {
-        $updated = update_option( 'wpr_example_setting', $request->get_param( 'exampleSetting' ) );
+        $updated = update_option( 'hs_example_setting', $request->get_param( 'exampleSetting' ) );
 
         return new \WP_REST_Response( array(
             'success'   => $updated,
@@ -155,7 +155,7 @@ class Example {
      * @return WP_Error|WP_REST_Request
      */
     public function delete_example( $request ) {
-        $deleted = delete_option( 'wpr_example_setting' );
+        $deleted = delete_option( 'hs_example_setting' );
 
         return new \WP_REST_Response( array(
             'success'   => $deleted,
