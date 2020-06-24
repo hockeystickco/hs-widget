@@ -3,11 +3,12 @@ import { Card, Skeleton, Tag, Button, Typography, Space } from 'antd';
 
 const { Text } = Typography;
 
-import './hockeystick-widget.less';
-import './hockeystick-widget.css'
+import './styles/hockeystick-widget.less';
+import './styles/hockeystick-widget.css'
 
 import PlaceholderLogo from './images/Placeholder_Logo.png';
 import en from './data/en.json';
+import WidgetSkeleton from './WidgetSkeleton.jsx'
 
 export default class HockeystickWidget extends React.Component {
   constructor(props) {
@@ -28,7 +29,7 @@ export default class HockeystickWidget extends React.Component {
       'visible': !this.state.visible
     });
     if (!this.state.loaded) {
-      this.fetchCompanyInfo('NinetalesCharmanderFront-line.com')
+      this.fetchCompanyInfo(this.props.domain)
         .then(
           (result) => {
             this.setState({
@@ -90,33 +91,24 @@ export default class HockeystickWidget extends React.Component {
       src={'https://i.imgur.com/YUKlZj0.png'}/>;
 
     console.log(this.state.facts);
+    console.log(this.props.content || this.state.facts["Operating Name"] || this.state.facts["Legal Name"]);
     return (
       <Text
         className='trigger'
         onClick={this.handleClick}
         id='antd'
-        >Click me
+        >{this.props.content || this.state.facts["Operating Name"] || this.state.facts["Legal Name"]}
         <Card className={this.state.visible ? 'card' : 'hidden'}>
-          <Skeleton loading={this.state.loading} active={true} avatar={{size: 106, shape: 'square'}} paragraph={false} title={false}>
-            <Space direction='vertical' align='center'>
-              {logo}
-              {entityName}
-              {entityType}
-              {entityLocation}
-              {entityVerticals}
-              {entityDesc}
-              {hsButton}
-            </Space>
-          </Skeleton>
-          <Skeleton style={{'margin': '10px'}} loading={this.state.loading} active={true} paragraph={false} title={{width: 150}}/>
-          <Skeleton loading={this.state.loading} active={true} paragraph={false} title={{width: 192}}/>
-          <br/>
-          <Skeleton loading={this.state.loading} active={true} paragraph={false} title={{width: 240}}/>
-          <Skeleton loading={this.state.loading} active={true} paragraph={false} title={{width: 240}}/>
-          <Skeleton loading={this.state.loading} active={true} paragraph={false} title={{width: 240}}/>
-          <Skeleton loading={this.state.loading} active={true} paragraph={false} title={{width: 240}}/>
-          <br/>
-          <Skeleton loading={this.state.loading} active={true} paragraph={false} title={{width: 240}}/>
+          <WidgetSkeleton loading={this.state.loading}/>
+          <Space className={this.state.loading ? 'hidden' : ''} direction='vertical' align='center'>
+            {logo}
+            {entityName}
+            {entityType}
+            {entityLocation}
+            {entityVerticals}
+            {entityDesc}
+            {hsButton}
+          </Space>
           {powered}
         </Card>
       </Text>

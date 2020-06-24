@@ -19,7 +19,7 @@ module.exports = (env, argv) => {
     devtool: production ? '' : 'source-map',
 
     plugins: [
-      new webpack.NormalModuleReplacementPlugin( /node_modules\/antd\/lib\/style\/index\.less/, path.resolve(__dirname, './app/components/hockeystick-widget.less') )
+      new webpack.NormalModuleReplacementPlugin( /node_modules\/antd\/lib\/style\/index\.less/, path.resolve(__dirname, './app/components/styles/hockeystick-widget.less') )
     ],
 
     resolve: {

@@ -83,9 +83,11 @@ class Shortcode {
 		$object_name = 'hs_object_' . uniqid();
 
 		$object = shortcode_atts( array(
-			'title'       => 'Hello world',
+			'title'       => 'Hockeystick Plugin',
 			'api_nonce'   => wp_create_nonce( 'wp_rest' ),
-			'api_url'	  => rest_url( $this->plugin_slug . '/v1/' ),
+			'api_url' 	  => rest_url( $this->plugin_slug . '/v1/' ),
+			'atts'				=> $atts,
+			'content'			=> $content
 		), $atts, 'hockeystick-widget' );
 
 		wp_localize_script( $this->plugin_slug . '-shortcode-script', $object_name, $object );
