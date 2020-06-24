@@ -1,8 +1,11 @@
 import React from 'react';
-import { Card, Skeleton, Tag, Button } from 'antd';
+import { Card, Skeleton, Tag, Button, Typography, Space } from 'antd';
 
-import './hockeystick-widget.css';
-// import 'antd/dist/antd.less';
+const { Text } = Typography;
+
+import './hockeystick-widget.less';
+import './hockeystick-widget.css'
+
 import PlaceholderLogo from './images/Placeholder_Logo.png';
 import en from './data/en.json';
 
@@ -18,7 +21,6 @@ export default class HockeystickWidget extends React.Component {
   }
 
   componentDidMount() {
-    console.log(PlaceholderLogo);
   }
 
   handleClick = (e) => {
@@ -42,7 +44,6 @@ export default class HockeystickWidget extends React.Component {
     }
   }
 
-  // src={`http://logo.hockeystick.co/` + 'NinetalesCharmanderFront-line.com' + `?size=` + 106}
 
   render() {
     const logo = <img
@@ -51,38 +52,38 @@ export default class HockeystickWidget extends React.Component {
 
     // TODO: Generalize this
     const entityName = (this.state.facts["Operating Name"] || this.state.facts["Legal Name"]) ?
-    (<div
+    (<Text
       className="entityName">
       {this.state.facts["Operating Name"] || this.state.facts["Legal Name"]}
-    </div>) : null;
+    </Text>) : null;
 
     const entityType = (this.state.facts["Organization Type"]) ?
-    (<div
+    (<Text
       className="entityType">
       {this.state.facts["Organization Type"]}
-    </div>) : null;
+    </Text>) : null;
 
     const entityLocation = (this.state.facts["Location"]) ?
-    (<div
+    (<Text
       className="entityLocation">
       {this.normalizeLocation(this.state.facts["Location"])}
-    </div>) : null;
+    </Text>) : null;
 
     // TODO: Handle vertical overflow
     const entityVerticals = (this.state.facts["Verticals"].length > 0) ?
-    (<div
+    (<Text
       className="verticalList">
       {this.state.facts["Verticals"].map(vertical => <Tag key={vertical} className="vertical">{vertical}</Tag>)}
       {/*["TravelTech", "Vertical2"].map(vertical => <Tag className="vertical">{vertical}</Tag>)*/}
-    </div>) : null;
+    </Text>) : null;
 
     const entityDesc = (this.state.facts["Short Description"]) ?
-    (<div
+    (<Text
       className="entityDesc">
       {this.state.facts["Short Description"]}
-    </div>) : null;
+    </Text>) : null;
 
-    const hsButton = <Button type="primary">View Hockeystick Profile</Button>;
+    const hsButton = <Button type="primary" className="hsButton">View Hockeystick Profile</Button>;
 
     const powered = <img
       className='powered'
@@ -90,23 +91,35 @@ export default class HockeystickWidget extends React.Component {
 
     console.log(this.state.facts);
     return (
-      <span
+      <Text
         className='trigger'
         onClick={this.handleClick}
+        id='antd'
         >Click me
         <Card className={this.state.visible ? 'card' : 'hidden'}>
-          <Skeleton loading={this.state.loading}>
-            {logo}
-            {entityName}
-            {entityType}
-            {entityLocation}
-            {entityVerticals}
-            {entityDesc}
-            {hsButton}
-            {powered}
+          <Skeleton loading={this.state.loading} active={true} avatar={{size: 106, shape: 'square'}} paragraph={false} title={false}>
+            <Space direction='vertical' align='center'>
+              {logo}
+              {entityName}
+              {entityType}
+              {entityLocation}
+              {entityVerticals}
+              {entityDesc}
+              {hsButton}
+            </Space>
           </Skeleton>
+          <Skeleton style={{'margin': '10px'}} loading={this.state.loading} active={true} paragraph={false} title={{width: 150}}/>
+          <Skeleton loading={this.state.loading} active={true} paragraph={false} title={{width: 192}}/>
+          <br/>
+          <Skeleton loading={this.state.loading} active={true} paragraph={false} title={{width: 240}}/>
+          <Skeleton loading={this.state.loading} active={true} paragraph={false} title={{width: 240}}/>
+          <Skeleton loading={this.state.loading} active={true} paragraph={false} title={{width: 240}}/>
+          <Skeleton loading={this.state.loading} active={true} paragraph={false} title={{width: 240}}/>
+          <br/>
+          <Skeleton loading={this.state.loading} active={true} paragraph={false} title={{width: 240}}/>
+          {powered}
         </Card>
-      </span>
+      </Text>
     );
   }
 

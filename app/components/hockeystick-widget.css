@@ -1,5 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Lato);
 
+
 .trigger {
   position: relative;
   display: inline-block;
@@ -14,11 +15,6 @@
   position: absolute;
   z-index: 1;
   cursor: auto;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 20px;
 
   width: 280px;
   height: auto;
@@ -170,7 +166,7 @@
   z-index: 2;
 }
 
-.ant-btn-primary {
+.hsButton {
   position: static;
   padding: 8px 16px;
   width: 240px;
@@ -180,7 +176,6 @@
   border-radius: 2px;
 
   /* Inside Auto Layout */
-  margin: 10px;
   margin-top: 20px;
 
   font-family: Lato;

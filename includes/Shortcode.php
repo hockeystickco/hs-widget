@@ -5,8 +5,6 @@
  *
  * @package   WP-Reactivate
  * @author    Hockeystick
- * @license   GPL-3.0
- * @link      https://gopangolin.com
  * @copyright 2020 Hockeystick
  */
 
