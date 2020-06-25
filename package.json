@@ -27,6 +27,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-onclickoutside": "^6.9.0",
     "style-loader": "^1.2.1",
     "util": "^0.12.3",
     "why-did-you-update": "^1.0.8"

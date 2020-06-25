@@ -15,6 +15,7 @@
   position: absolute;
   z-index: 1;
   cursor: auto;
+  pointer-events: initial;
 
   width: 280px;
   height: auto;

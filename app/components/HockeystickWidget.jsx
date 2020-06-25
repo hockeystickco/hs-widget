@@ -1,27 +1,24 @@
 import React from 'react';
 import { Card, Skeleton, Tag, Button, Typography, Space } from 'antd';
+import onClickOutside from "react-onclickoutside";
 
 const { Text } = Typography;
 
 import './styles/hockeystick-widget.less';
 import './styles/hockeystick-widget.css'
 
-import PlaceholderLogo from './images/Placeholder_Logo.png';
 import en from './data/en.json';
-import WidgetSkeleton from './WidgetSkeleton.jsx'
+import WidgetSkeleton from './WidgetSkeleton.jsx';
+import Logo from './Logo.jsx';
 
-export default class HockeystickWidget extends React.Component {
+class HockeystickWidget extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
       visible: false,
       facts: {"Verticals": []},
-      coordinates: [0, 0]
     };
-  }
-
-  componentDidMount() {
   }
 
   handleClick = (e) => {
@@ -45,13 +42,14 @@ export default class HockeystickWidget extends React.Component {
     }
   }
 
+  handleClickOutside = evt => {
+    this.setState({
+      visible: false
+    });
+  };
 
   render() {
     const noVerticals = ["Government", "Investor", "Accelerator / Incubator"];
-
-    const logo = <img
-      className='logo'
-      src={'https://i.imgur.com/h8P0NNv.png'}/>;
 
     // TODO: Generalize this
     const entityName = (this.state.facts["Operating Name"] || this.state.facts["Legal Name"]) ?
@@ -77,8 +75,8 @@ export default class HockeystickWidget extends React.Component {
     (<Space
       className="verticalList"
       size={3}>
-      {/*this.state.facts["Verticals"].map(vertical => <Tag key={vertical} className="vertical">{vertical}</Tag>)*/}
-      {["TravelTech", "Vertical2"].map(vertical => <Tag className="vertical">{vertical}</Tag>)}
+      {this.state.facts["Verticals"].slice(0, 3).map(vertical => <Tag key={vertical} className="vertical">{vertical}</Tag>)}
+      {/*"TravelTech", "Vertical2"].map(vertical => <Tag className="vertical">{vertical}</Tag>)*/}
     </Space>) : null;
 
     const entityDesc = (this.state.facts["Short Description"]) ?
@@ -87,24 +85,30 @@ export default class HockeystickWidget extends React.Component {
       {this.state.facts["Short Description"]}
     </Text>) : null;
 
-    const hsButton = <Button type="primary" className="hsButton">View Hockeystick Profile</Button>;
+    const hsButton = <Button
+      type="primary"
+      className="hsButton"
+      href={"https://www.dev2.hkst.io/entities/" + this.state.facts["id"]}
+      target="_blank">View Hockeystick Profile</Button>;
 
     const powered = <img
       className='powered'
       src={'https://i.imgur.com/YUKlZj0.png'}
-      style={{marginTop: "20px"}}/>;
+      style={{marginTop: '20px'}}/>;
 
-    console.log(this.state.facts);
+    const {domain, ...props} = this.props;
+    console.log(domain);
+
     return (
       <Text
         className='trigger'
         onClick={this.handleClick}
         id='antd'
         >{this.props.content}
-        <Card className={this.state.visible ? 'card' : 'hidden'}>
+        <Card className={this.state.visible ? 'card' : 'hidden'} onClick={(e) => {e.stopPropagation()}}>
           <WidgetSkeleton loading={this.state.loading}/>
           <Space className={this.state.loading ? 'hidden' : ''} direction='vertical' align='center'>
-            {logo}
+            <Logo src={'http://logo.hockeystick.co/' + domain + '?size=' + 106}/>
             {entityName}
             {entityType}
             {entityLocation}
@@ -250,3 +254,5 @@ export default class HockeystickWidget extends React.Component {
     return en[tokens.join('::')];
   }
 }
+
+export default onClickOutside(HockeystickWidget);
