@@ -47,6 +47,8 @@ export default class HockeystickWidget extends React.Component {
 
 
   render() {
+    const noVerticals = ["Government", "Investor", "Accelerator / Incubator"];
+
     const logo = <img
       className='logo'
       src={'https://i.imgur.com/h8P0NNv.png'}/>;
@@ -61,7 +63,7 @@ export default class HockeystickWidget extends React.Component {
     const entityType = (this.state.facts["Organization Type"]) ?
     (<Text
       className="entityType">
-      {this.state.facts["Organization Type"]}
+      {this.normalizeType(this.state.facts["Organization Type"])}
     </Text>) : null;
 
     const entityLocation = (this.state.facts["Location"]) ?
@@ -71,12 +73,13 @@ export default class HockeystickWidget extends React.Component {
     </Text>) : null;
 
     // TODO: Handle vertical overflow
-    const entityVerticals = (this.state.facts["Verticals"].length > 0) ?
-    (<Text
-      className="verticalList">
-      {this.state.facts["Verticals"].map(vertical => <Tag key={vertical} className="vertical">{vertical}</Tag>)}
-      {/*["TravelTech", "Vertical2"].map(vertical => <Tag className="vertical">{vertical}</Tag>)*/}
-    </Text>) : null;
+    const entityVerticals = (this.state.facts["Verticals"].length > 0 && !(noVerticals.includes(this.normalizeType(this.state.facts["Organization Type"])))) ?
+    (<Space
+      className="verticalList"
+      size={3}>
+      {/*this.state.facts["Verticals"].map(vertical => <Tag key={vertical} className="vertical">{vertical}</Tag>)*/}
+      {["TravelTech", "Vertical2"].map(vertical => <Tag className="vertical">{vertical}</Tag>)}
+    </Space>) : null;
 
     const entityDesc = (this.state.facts["Short Description"]) ?
     (<Text
@@ -88,16 +91,16 @@ export default class HockeystickWidget extends React.Component {
 
     const powered = <img
       className='powered'
-      src={'https://i.imgur.com/YUKlZj0.png'}/>;
+      src={'https://i.imgur.com/YUKlZj0.png'}
+      style={{marginTop: "20px"}}/>;
 
     console.log(this.state.facts);
-    console.log(this.props.content || this.state.facts["Operating Name"] || this.state.facts["Legal Name"]);
     return (
       <Text
         className='trigger'
         onClick={this.handleClick}
         id='antd'
-        >{this.props.content || this.state.facts["Operating Name"] || this.state.facts["Legal Name"]}
+        >{this.props.content}
         <Card className={this.state.visible ? 'card' : 'hidden'}>
           <WidgetSkeleton loading={this.state.loading}/>
           <Space className={this.state.loading ? 'hidden' : ''} direction='vertical' align='center'>
@@ -184,7 +187,7 @@ export default class HockeystickWidget extends React.Component {
       if (name == "Vertical") {
         facts["Verticals"].push((option && option.name) || value);
       } else {
-        facts[name] = (name == "Organization Type") ? (option && option.name) : value;
+        facts[name] = value;
       }
     });
 
@@ -237,5 +240,13 @@ export default class HockeystickWidget extends React.Component {
       location += ", " + en[tokens.join('::')];
     }
     return location;
+  }
+
+  normalizeType(uniqueKey) {
+    const tokens = uniqueKey.split('::');
+    while (tokens.length > 2) {
+      tokens.pop();
+    }
+    return en[tokens.join('::')];
   }
 }
