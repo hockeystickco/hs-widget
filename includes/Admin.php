@@ -1,9 +1,9 @@
 <?php
 /**
- * WP-Reactivate
+ * Hockeystick
  *
  *
- * @package   WP-Reactivate
+ * @package   Hockeystick
  * @author    Hockeystick
  * @license   GPL-3.0
  * @link      https://gopangolin.com

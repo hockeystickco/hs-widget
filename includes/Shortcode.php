@@ -1,9 +1,9 @@
 <?php
 /**
- * WP-Reactivate
+ * Hockeystick
  *
  *
- * @package   WP-Reactivate
+ * @package   Hockeystick
  * @author    Hockeystick
  * @copyright 2020 Hockeystick
  */

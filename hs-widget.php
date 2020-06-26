@@ -1,6 +1,6 @@
 <?php
 /**
- * WP-Reactivate
+ * Hockeystick
  *
  *
  * @package   Hockeystick Widget
