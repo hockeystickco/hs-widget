@@ -1,0 +1,53 @@
+{
+  "name": "hockeystick-widget",
+  "version": "1.0.0",
+  "description": "Widget that displays a company's information from Hockeystick.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --progress --colors --watch --mode=development",
+    "prod": "webpack --progress --colors -p --config webpack.config.js --mode=production"
+  },
+  "keywords": [
+    "wordpress",
+    "react",
+    "plugin",
+    "webpack"
+  ],
+  "author": "Hockeystick",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0",
+    "antd": "^4.3.5",
+    "babel-plugin-import": "^1.13.0",
+    "dayjs": "^1.8.28",
+    "isomorphic-fetch": "^2.2.1",
+    "less": "^3.11.3",
+    "path": "^0.12.7",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-auto-scale": "^1.0.4",
+    "react-dom": "^16.13.1",
+    "react-onclickoutside": "^6.9.0",
+    "style-loader": "^1.2.1",
+    "util": "^0.12.3",
+    "why-did-you-update": "^1.0.8"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.4",
+    "css-loader": "^3.6.0",
+    "eslint": "^5.6.1",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-react": "^7.11.1",
+    "file-loader": "^6.0.0",
+    "less-loader": "^5.0.0",
+    "url-loader": "^4.1.0",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2"
+  }
+}
