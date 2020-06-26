@@ -12,7 +12,8 @@ export default class Logo extends React.Component {
   onError = () => {
     if (!this.state.error) {
       this.setState({
-        src: 'https://i.imgur.com/h8P0NNv.png',
+        //src: 'https://i.imgur.com/h8P0NNv.png',
+        src: './images/Placeholder_Logo.png',
         error: true
       });
     }

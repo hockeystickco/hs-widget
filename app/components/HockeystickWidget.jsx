@@ -17,6 +17,7 @@ class HockeystickWidget extends React.Component {
     this.state = {
       loading: true,
       visible: false,
+      error: false,
       facts: {"Verticals": []},
     };
   }
@@ -25,7 +26,7 @@ class HockeystickWidget extends React.Component {
     this.setState({
       'visible': !this.state.visible
     });
-    if (!this.state.loaded) {
+    if (this.state.loading) {
       this.fetchCompanyInfo(this.props.domain)
         .then(
           (result) => {
@@ -33,10 +34,12 @@ class HockeystickWidget extends React.Component {
               loading: false,
               facts: result
             });
-            // console.log(this.state.facts);
           },
           (error) => {
             console.log(error);
+            this.setState({
+              error: true
+            });
           }
         );
     }
@@ -88,37 +91,49 @@ class HockeystickWidget extends React.Component {
     const hsButton = <Button
       type="primary"
       className="hsButton"
-      href={"https://www.dev2.hkst.io/entities/" + this.state.facts["id"]}
+      href={"https://www.hockeystick.co/entities/" + this.state.facts["id"]}
       target="_blank">View Hockeystick Profile</Button>;
 
-    const powered = <img
+    const powered = this.state.error ? null : <img
       className='powered'
       src={'https://i.imgur.com/YUKlZj0.png'}
       style={{marginTop: '20px'}}/>;
 
+    const error = this.state.error ? (
+      <Space direction='vertical' align='center' style={{'marginTop': '150px', 'marginBottom': '150px'}}>
+        <img
+          className='error'
+          src={'https://i.imgur.com/RE4NgFq.png'}/>
+        <Text className='entityDesc' style={{'margin': '0'}}>{'Whoops. Something went wrong'}</Text>
+        <Text className='entityLocation'>{'Please try again later'}</Text>
+      </Space>) : null;
+
     const {domain, ...props} = this.props;
-    console.log(domain);
 
     return (
-      <Text
-        className='trigger'
-        onClick={this.handleClick}
-        id='antd'
-        >{this.props.content}
-        <Card className={this.state.visible ? 'card' : 'hidden'} onClick={(e) => {e.stopPropagation()}}>
-          <WidgetSkeleton loading={this.state.loading}/>
-          <Space className={this.state.loading ? 'hidden' : ''} direction='vertical' align='center'>
-            <Logo src={'http://logo.hockeystick.co/' + domain + '?size=' + 106}/>
-            {entityName}
-            {entityType}
-            {entityLocation}
-            {entityVerticals}
-            {entityDesc}
-            {hsButton}
-          </Space>
-          {powered}
-        </Card>
-      </Text>
+      <>
+        <Text
+          className='trigger'
+          onClick={this.handleClick}
+          id='antd'
+          >{this.props.content}
+          <Card className={this.state.visible ? 'card' : 'hidden'} onClick={(e) => {e.stopPropagation()}}>
+            <WidgetSkeleton loading={this.state.loading && !(this.state.error)}/>
+            {error}
+            <Space className={(this.state.loading || this.state.error) ? 'hidden' : ''} direction='vertical' align='center' size={0}>
+              <Logo src={'http://logo.hockeystick.co/' + domain + '?size=' + 106}/>
+              {entityName}
+              {entityType}
+              {entityLocation}
+              {entityVerticals}
+              {entityDesc}
+              {hsButton}
+            </Space>
+            {powered}
+          </Card>
+        </Text>
+        <div className={this.state.visible ? 'background' : 'hidden'}></div>
+      </>
     );
   }
 
@@ -161,7 +176,7 @@ class HockeystickWidget extends React.Component {
         }
       }
     `;
-    let response = await this.fetchData(query, 'https://graph.dev2.hkst.io/');
+    let response = await this.fetchData(query, 'https://graph.rc.hkst.io/');
     let {
       "data":{
         "view":{
@@ -197,7 +212,7 @@ class HockeystickWidget extends React.Component {
 
     let headquarters = this.getHeadquarters(officeArray);
 
-    // If headquarters is found,
+    // Ignore non-headquarter offices
     const officeFacts = (headquarters && headquarters["facts"]) || [];
     officeFacts.forEach(officeFact => {
       const {"concept": {"name": name}, "value": value} = officeFact;
@@ -211,9 +226,9 @@ class HockeystickWidget extends React.Component {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Referer': url,
       },
-      body: JSON.stringify({query})
+      body: JSON.stringify({query}),
+      referrerPolicy: "origin"
     })
       .then(r => r.json());
     return response;
@@ -238,7 +253,7 @@ class HockeystickWidget extends React.Component {
 
   normalizeLocation(uniqueKey) {
     const tokens = uniqueKey.split('::');
-    var location = en[uniqueKey];
+    let location = en[uniqueKey];
     while (tokens.length > 2) {
       tokens.pop();
       location += ", " + en[tokens.join('::')];
