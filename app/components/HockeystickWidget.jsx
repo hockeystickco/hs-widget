@@ -54,7 +54,6 @@ class HockeystickWidget extends React.Component {
   render() {
     const noVerticals = ["Government", "Investor", "Accelerator / Incubator"];
 
-    // TODO: Generalize this
     const entityName = (this.state.facts["Operating Name"] || this.state.facts["Legal Name"]) ?
     (<Text
       className="entityName">
@@ -73,12 +72,12 @@ class HockeystickWidget extends React.Component {
       {this.normalizeLocation(this.state.facts["Location"])}
     </Text>) : null;
 
-    // TODO: Handle vertical overflow
     const entityVerticals = (this.state.facts["Verticals"].length > 0 && !(noVerticals.includes(this.normalizeType(this.state.facts["Organization Type"])))) ?
     (<Space
       className="verticalList"
       size={3}>
       {this.state.facts["Verticals"].slice(0, 3).map(vertical => <Tag key={vertical} className="vertical">{vertical}</Tag>)}
+      {this.state.facts["Verticals"].slice(3, 6).map(vertical => <Tag key={vertical} className="vertical">{vertical}</Tag>)}
       {/*"TravelTech", "Vertical2"].map(vertical => <Tag className="vertical">{vertical}</Tag>)*/}
     </Space>) : null;
 
