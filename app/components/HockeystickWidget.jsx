@@ -154,9 +154,9 @@ class HockeystickWidget extends React.Component {
   async fetchCompanyInfo(domain) {
     let facts = {"Verticals": []};
     const query = `
-      query SearchQuery {
+      query SearchQuery ($domain: String) {
         view(datasets: ["public"]) {
-          search(type: ENTITY, page: 1, pageSize: 10, sortOrder: null, first: 1, conceptFilters: [{string: {like: "` + domain + `"}, uniqueKey: "Entity::Domain"}]) {
+          search(type: ENTITY, sortOrder: null, first: 1, conceptFilters: [{string: {like: $domain}, uniqueKey: "Entity::Domain"}]) {
             count
             edges {
               node {
@@ -190,7 +190,7 @@ class HockeystickWidget extends React.Component {
         }
       }
     `;
-    let response = await this.fetchData(query, 'https://graph.rc.hkst.io/');
+    let response = await this.fetchData(query, 'https://graph.rc.hkst.io/', domain);
     let {
       "data":{
         "view":{
@@ -235,13 +235,16 @@ class HockeystickWidget extends React.Component {
     return facts;
   }
 
-  fetchData(query, url) {
+  fetchData(query, url, domain) {
     let response = fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({query}),
+      body: JSON.stringify({
+        query,
+        variables: {domain}
+      }),
       referrerPolicy: "origin"
     })
       .then(r => r.json());
