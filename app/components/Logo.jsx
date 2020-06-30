@@ -12,8 +12,7 @@ export default class Logo extends React.Component {
   onError = () => {
     if (!this.state.error) {
       this.setState({
-        src: 'https://i.imgur.com/h8P0NNv.png',
-        //src: '../images/Placeholder_Logo.png',
+        src: this.props.placeholder,
         error: true
       });
     }
@@ -21,6 +20,11 @@ export default class Logo extends React.Component {
 
   render() {
     const {src, ...props} = this.props;
+
+    if (!this.props.visible) {
+      return null;
+    }
+    
     return (
       <img
         className='logo'

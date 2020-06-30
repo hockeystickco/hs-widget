@@ -4,7 +4,7 @@ import HockeystickWidget from '../components/HockeystickWidget';
 
 export default class Shortcode extends Component {
   render() {
-    return <HockeystickWidget domain={this.props.wpObject.atts.url} content={this.props.wpObject.content}/>;
+    return <HockeystickWidget{...this.props}/>;
   }
 }
 

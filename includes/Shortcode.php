@@ -87,7 +87,8 @@ class Shortcode {
 			'api_nonce'   => wp_create_nonce( 'wp_rest' ),
 			'api_url' 	  => rest_url( $this->plugin_slug . '/v1/' ),
 			'atts'				=> $atts,
-			'content'			=> $content
+			'content'			=> $content,
+			'images'				=> plugins_url('assets/images', dirname( __FILE__ ))
 		), $atts, 'hockeystick-widget' );
 
 		wp_localize_script( $this->plugin_slug . '-shortcode-script', $object_name, $object );
