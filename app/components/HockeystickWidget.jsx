@@ -1,13 +1,12 @@
 import React from 'react';
 import { Card, Skeleton, Tag, Button, Typography, Space, Popover } from 'antd';
-import onClickOutside from "react-onclickoutside";
 
 const { Text } = Typography;
 
 import './styles/hockeystick-widget.less';
-import './styles/hockeystick-widget.css';
 
 import en from './data/en.json';
+import ErrorBoundary from './ErrorBoundary.jsx';
 import WidgetSkeleton from './WidgetSkeleton.jsx';
 import Logo from './Logo.jsx';
 import EntityInfo from './EntityInfo.jsx';
@@ -18,6 +17,7 @@ import VerticalList from './VerticalList.jsx';
 class HockeystickWidget extends React.Component {
   constructor(props) {
     super(props);
+    this.ref = React.createRef();
     this.state = {
       loading: true,
       visible: false,
@@ -34,11 +34,9 @@ class HockeystickWidget extends React.Component {
   //  };
 
   handleVisibleChange = visible => {
-    console.log(this.state);
     this.setState({
       visible: visible
     });
-    console.log(this.state);
 
     if (this.state.loading) {
       this.fetchCompanyInfo(encodeURIComponent(this.props.wpObject.atts.url))
@@ -68,13 +66,11 @@ class HockeystickWidget extends React.Component {
         if (!uniqueKey) {
           return null;
         }
-        const tokens = uniqueKey.split('::');
-        let location = en[uniqueKey];
-        while (tokens.length > 2) {
-          tokens.pop();
-          location += ", " + en[tokens.join('::')];
-        }
-        return location;
+        const city = uniqueKey.match(/^[^:]+(::[^:]+){3}/)[0];
+        const province = uniqueKey.match(/^[^:]+(::[^:]+){2}/)[0];
+        const country = uniqueKey.match(/^[^:]+(::[^:]+){1}/)[0];
+
+        return `${city ? en[city] + ", " : ""}${province ? en[province] + ", " : ""}${country ? en[country] : ""}`;
       }
 
       const normalizeType = uniqueKey => {
@@ -85,66 +81,67 @@ class HockeystickWidget extends React.Component {
       }
 
       return (
-        <Card
-          className='popup'>
-          <WidgetSkeleton loading={props.loading && !(props.error)}/>
-          <Error visible={props.error} imageSrc={props.wpObject.images + '/Warning.png'}/>
-          <Space direction='vertical' align='center' size={0}>
-            <Logo
-              src={'http://logo.hockeystick.co/' + encodeURIComponent(props.wpObject.atts.url) + '?size=' + 106}
-              placeholder={props.wpObject.images + '/Placeholder_Logo.png'}
-              visible={props.loading || props.error ? 0 : 1}/>
-            <EntityInfo className='entityName' content={props.facts["Operating Name"] || props.facts["Legal Name"]}/>
-            <EntityInfo className='entityType' content={normalizeType(props.facts["Organization Type"])}/>
-            <EntityInfo className='entityLocation' content={normalizeLocation(props.facts["Location"])}/>
-            <VerticalList
-              visible={props.facts['Verticals'].length && !noVerticals.includes(normalizeType(props.facts["Organization Type"])) ? 1 : 0}
-              verticals={props.facts['Verticals']}/>
-            <EntityInfo className='entityDesc' content={props.facts["Short Description"]}/>
-            <HSButton
-              className='hsButton'
-              href={`https://www.hockeystick.co/entities/${props.facts['id']}`}
-              visible={props.loading || props.error ? 0 : 1}/>
-          </Space>
-          <img
-            className={props.error ? 'hidden' : 'powered'}
-            src={props.wpObject.images + '/Powered_By_HS.png'}
-            style={{'marginTop': '20px'}}/>
-        </Card>
+        <ErrorBoundary imgSrc={props.wpObject.images + '/Warning.png'}>
+          <Card
+            className='popup'>
+            <WidgetSkeleton loading={props.loading && !(props.error)}/>
+            <Error visible={props.error} imageSrc={props.wpObject.images + '/Warning.png'}/>
+            <Space direction='vertical' align='center' size={0}>
+              <Logo
+                src={'http://logo.hockeystick.co/' + encodeURIComponent(props.wpObject.atts.url) + '?size=' + 106}
+                placeholder={props.wpObject.images + '/Placeholder_Logo.png'}
+                visible={props.loading || props.error ? 0 : 1}/>
+              <EntityInfo className='entityName' content={props.facts["Operating Name"] || props.facts["Legal Name"]}/>
+              <EntityInfo className='entityType' content={normalizeType(props.facts["Organization Type"])}/>
+              <EntityInfo className='entityLocation' content={normalizeLocation(props.facts["Location"])}/>
+              <VerticalList
+                visible={props.facts['Verticals'].length && !noVerticals.includes(normalizeType(props.facts["Organization Type"])) ? 1 : 0}
+                verticals={props.facts['Verticals']}/>
+              <EntityInfo className='entityDesc' content={props.facts["Short Description"]}/>
+              <HSButton
+                className='hsButton'
+                visible={props.loading || props.error ? 0 : 1}/>
+            </Space>
+            <img
+              className={props.error ? 'hidden' : 'powered'}
+              src={props.wpObject.images + '/Powered_By_HS.png'}
+              style={{'marginTop': '20px'}}/>
+          </Card>
+        </ErrorBoundary>
       );
     }
 
-    const card = (
-      <Card
-        className='popup'>
-        <WidgetSkeleton loading={this.state.loading && !(this.state.error)}/>
-        <Error visible={this.state.error} imageSrc={this.props.wpObject.images + '/Warning.png'}/>
-        <Space direction='vertical' align='center' size={0}>
-          <Logo
-            src={'http://logo.hockeystick.co/' + encodeURIComponent(this.props.wpObject.atts.url) + '?size=' + 106}
-            placeholder={this.props.wpObject.images + '/Placeholder_Logo.png'}
-            visible={this.state.loading || this.state.error ? 0 : 1}/>
-          <EntityInfo className='entityName' content={this.state.facts["Operating Name"] || this.state.facts["Legal Name"]}/>
-          <EntityInfo className='entityType' content={this.normalizeType(this.state.facts["Organization Type"])}/>
-          <EntityInfo className='entityLocation' content={this.normalizeLocation(this.state.facts["Location"])}/>
-          <VerticalList
-            visible={this.state.facts['Verticals'].length && !noVerticals.includes(this.normalizeType(this.state.facts["Organization Type"])) ? 1 : 0}
-            verticals={this.state.facts['Verticals']}/>
-          <EntityInfo className='entityDesc' content={this.state.facts["Short Description"]}/>
-          <HSButton
-            className='hsButton'
-            href={`https://www.hockeystick.co/entities/${this.state.facts['id']}`}
-            visible={this.state.loading || this.state.error ? 0 : 1}/>
-        </Space>
-        <img
-          className={this.state.error ? 'hidden' : 'powered'}
-          src={this.props.wpObject.images + '/Powered_By_HS.png'}
-          style={{'marginTop': '20px'}}/>
-      </Card>
-    );
+    // const card = (
+    //   <Card
+    //     className='popup'>
+    //     <WidgetSkeleton loading={this.state.loading && !(this.state.error)}/>
+    //     <Error visible={this.state.error} imageSrc={this.props.wpObject.images + '/Warning.png'}/>
+    //     <Space direction='vertical' align='center' size={0}>
+    //       <Logo
+    //         src={'http://logo.hockeystick.co/' + encodeURIComponent(this.props.wpObject.atts.url) + '?size=' + 106}
+    //         placeholder={this.props.wpObject.images + '/Placeholder_Logo.png'}
+    //         visible={this.state.loading || this.state.error ? 0 : 1}/>
+    //       <EntityInfo className='entityName' content={this.state.facts["Operating Name"] || this.state.facts["Legal Name"]}/>
+    //       <EntityInfo className='entityType' content={this.normalizeType(this.state.facts["Organization Type"])}/>
+    //       <EntityInfo className='entityLocation' content={this.normalizeLocation(this.state.facts["Location"])}/>
+    //       <VerticalList
+    //         visible={this.state.facts['Verticals'].length && !noVerticals.includes(this.normalizeType(this.state.facts["Organization Type"])) ? 1 : 0}
+    //         verticals={this.state.facts['Verticals']}/>
+    //       <EntityInfo className='entityDesc' content={this.state.facts["Short Description"]}/>
+    //       <HSButton
+    //         className='hsButton'
+    //         href={`https://www.hockeystick.co/entities/${this.state.facts['id']}`}
+    //         visible={this.state.loading || this.state.error ? 0 : 1}/>
+    //     </Space>
+    //     <img
+    //       className={this.state.error ? 'hidden' : 'powered'}
+    //       src={this.props.wpObject.images + '/Powered_By_HS.png'}
+    //       style={{'marginTop': '20px'}}/>
+    //   </Card>
+    // );
 
     return (
-      <>
+      <div id='with-antd-styles' className='trigger' ref={this.ref}>
         <Popover
           overlayClassName='no-padding'
           content={
@@ -157,10 +154,11 @@ class HockeystickWidget extends React.Component {
           trigger='click'
           visible={this.state.visible}
           onVisibleChange={this.handleVisibleChange}
+          getPopupContainer={() => {return this.ref.current}}
         >
-          <Text className='trigger'>{this.props.wpObject.content}</Text>
+          <Text underline>{this.props.wpObject.content}</Text>
         </Popover>
-      </>
+      </div>
     );
 
 
@@ -169,7 +167,7 @@ class HockeystickWidget extends React.Component {
     //     <Text
     //       className='trigger'
     //       onClick={this.handleClick}
-    //       id='antd'
+    //       className='with-antd-styles'
     //       >{this.props.content}
     //       <Card className={this.state.visible ? 'card' : 'hidden'} onClick={(e) => {e.stopPropagation()}}>
     //         <WidgetSkeleton loading={this.state.loading && !(this.state.error)}/>
@@ -285,7 +283,7 @@ class HockeystickWidget extends React.Component {
       },
       body: JSON.stringify({
         query,
-        variables: variables
+        variables
       }),
       referrerPolicy: 'origin'
     })
@@ -307,7 +305,8 @@ class HockeystickWidget extends React.Component {
         }
         return office.facts.find(
           fact => {
-            return fact.concept &&
+            return fact &&
+            fact.concept &&
             fact.concept.name &&
             fact.value &&
             fact.concept.name == 'Office Type' &&
@@ -316,24 +315,6 @@ class HockeystickWidget extends React.Component {
         );
       }
     ) || null;
-  }
-
-  normalizeLocation(uniqueKey) {
-    if (!uniqueKey) {
-      return null;
-    }
-    const city = uniqueKey.match(/^[^:]+(::[^:]+){3}/);
-    const province = uniqueKey.match(/^[^:]+(::[^:]+){2}/);
-    const country = uniqueKey.match(/^[^:]+(::[^:]+){1}/);
-
-    return `${city ? city + ", " : ""}${province ? province + ", " : ""}${country ? country : ""}`;
-  }
-
-  normalizeType(uniqueKey) {
-    if (!uniqueKey) {
-      return null;
-    }
-    return en[uniqueKey.match(/^[^:]+::[^:]+/)] || null;
   }
 }
 

@@ -53,7 +53,10 @@ module.exports = (env, argv) => {
             {
               loader: "less-loader",
               options: {
-                javascriptEnabled: true
+                javascriptEnabled: true,
+                modifyVars: {
+                  'font-family': "'Lato', sans-serif",
+                }
               }
             }
           ],
