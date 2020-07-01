@@ -68,8 +68,6 @@
 
   /* Regular / 14px | 22px */
   font-family: Lato;
-  font-style: normal;
-  font-weight: normal;
   font-size: 14px;
   line-height: 22px;
   /* identical to box height, or 157% */
@@ -91,8 +89,6 @@
 
   /* Regular / 14px | 22px */
   font-family: Lato;
-  font-style: normal;
-  font-weight: normal;
   font-size: 14px;
   line-height: 22px;
   /* or 157% */
@@ -112,8 +108,6 @@
 .verticalList {
   position: static;
   font-family: Lato;
-  font-style: normal;
-  font-weight: normal;
   font-size: 12px;
   line-height: 20px;
   margin-bottom: 16px;
@@ -149,8 +143,6 @@
 
   /* Regular / 14px | 22px */
   font-family: Lato;
-  font-style: normal;
-  font-weight: normal;
   font-size: 14px;
   line-height: 22px;
   text-align: center;
@@ -173,21 +165,14 @@
   width: 240px;
   height: 40px;
 
-  background-color: #1890FF;
-  border-radius: 2px;
-
   /* Inside Auto Layout */
   margin-top: 20px;
 
   font-family: Lato;
   font-style: normal;
   font-weight: bold;
-  font-size: 16px;
-  line-height: 24px;
-  color: #FFFFFF;
   letter-spacing: -1px;
 
-  cursor: pointer;
   z-index: 2;
 }
 
