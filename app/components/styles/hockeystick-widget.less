@@ -11,12 +11,11 @@
   @import '~antd/lib/style/core/index.less';
   @import '~antd/lib/style/themes/default.less';
 
-  button .hsButton {
+  a.hsButton {
     font-weight: bold;
     color: #FFFFFF;
     background-color: #1890FF;
   }
-
 }
 
 .trigger {
@@ -32,9 +31,10 @@
   z-index: 1;
   font-family: Lato;
   font-style: normal;
+  text-align: center;
 }
 
-.ant-popover-arrow {
+div.ant-popover-arrow {
   display: none;
 }
 
@@ -77,7 +77,6 @@
   /* Inside Auto Layout */
   flex: none;
   order: 1;
-  align-self: center;
   margin: 0px 4px;
   z-index: 2;
 }
@@ -97,7 +96,7 @@
   /* Inside Auto Layout */
   flex: none;
   order: 2;
-  align-self: center;
+
   margin: 0px 4px;
   z-index: 2;
 }
@@ -117,7 +116,7 @@
   /* Inside Auto Layout */
   flex: none;
   order: 2;
-  align-self: center;
+
   margin-bottom: 16px;
   z-index: 2;
 }
@@ -137,7 +136,7 @@
 
   flex: none;
   order: 2;
-  align-self: center;
+
   z-index: 2;
 }
 
@@ -149,7 +148,7 @@
   padding: 1px 8px;
   text-align: center;
   text-overflow: ellipsis;
-  align-self: center;
+
   display: inline;
   text-align: center;
 }
@@ -169,7 +168,7 @@
   /* Inside Auto Layout */
   flex: none;
   order: 2;
-  align-self: center;
+
   margin-bottom: 32px;
   z-index: 2;
 }
@@ -219,7 +218,7 @@
     opacity: 0.5;
   }
 
-  .popup {
+  .ant-popover-inner-content {
     position: fixed;
     top: 50%;
     left: 50%;

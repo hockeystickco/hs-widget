@@ -99,6 +99,7 @@ class HockeystickWidget extends React.Component {
                 verticals={props.facts['Verticals']}/>
               <EntityInfo className='entityDesc' content={props.facts["Short Description"]}/>
               <HSButton
+                href={`https://www.hockeystick.co/entities/${props.facts['id']}`}
                 className='hsButton'
                 visible={props.loading || props.error ? 0 : 1}/>
             </Space>
