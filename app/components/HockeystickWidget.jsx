@@ -65,6 +65,110 @@ const WidgetCard = props => {
   );
 }
 
+async function fetchCompanyInfo(domain) {
+  let facts = {"Verticals": []};
+  const query = `
+    query SearchQuery ($domain: String) {
+      view(datasets: ["public"]) {
+        search(type: ENTITY, sortOrder: null, first: 1, conceptFilters: [{string: {like: $domain}, uniqueKey: "Entity::Domain"}]) {
+          count
+          edges {
+            node {
+              ... on Entity {
+                id
+                facts {
+                  value
+                  concept {
+                    name
+                    uniqueKey
+                  }
+                  option {
+                    name
+                    uniqueKey
+                  }
+                }
+                offices {
+                  id
+                  facts {
+                    concept {
+                      name
+                      uniqueKey
+                    }
+                    value
+                    option {
+                      name
+                      uniqueKey
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  let response = await fetchData(query, 'https://graph.rc.hkst.io/', {domain});
+  let {
+    "data":{
+      "view":{
+        "search":{
+          "edges":[
+            {
+              "node":{
+                "facts":factArray,
+                "id": id,
+                "offices":officeArray
+              }
+            }
+          ]
+        }
+      }
+    }
+  } = response;
+
+  facts["id"] = id;
+
+  factArray.forEach((fact) => {
+    const {
+      "concept": {"uniqueKey": uniqueKey, "name": name},
+      "option": option,
+      "value": value
+    } = fact;
+    if (uniqueKey == "Entity::Vertical") {
+      facts["Verticals"].push((option && option.name) || value);
+    } else {
+      facts[name] = value;
+    }
+  });
+
+  let headquarters = getHeadquarters(officeArray);
+
+  // Ignore non-headquarter offices
+  const officeFacts = (headquarters && headquarters["facts"]) || [];
+  officeFacts.forEach(officeFact => {
+    const {"concept": {"name": name}, "value": value} = officeFact;
+    facts[name] = value;
+  });
+  return facts;
+}
+
+function fetchData(query, url, variables) {
+  let response = fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query,
+      variables
+    }),
+    referrerPolicy: 'origin'
+  })
+    .then(r => r.json());
+  return response;
+}
+
 // Takes an array of structures representing offices, and returns one with
 // "OfficeType::Headquarter" as its value for "Office Type", if one exists.
 const getHeadquarters = offices => {
@@ -108,7 +212,7 @@ class HockeystickWidget extends React.Component {
     });
 
     if (this.state.loading) {
-      this.fetchCompanyInfo(encodeURIComponent(this.props.wpObject.atts.url))
+      fetchCompanyInfo(encodeURIComponent(this.props.wpObject.atts.url))
         .then(
           (result) => {
             this.setState({
@@ -153,110 +257,6 @@ class HockeystickWidget extends React.Component {
         <div className={this.state.visible ? 'background' : 'hidden'}/>
       </>
     );
-  }
-
-  async fetchCompanyInfo(domain) {
-    let facts = {"Verticals": []};
-    const query = `
-      query SearchQuery ($domain: String) {
-        view(datasets: ["public"]) {
-          search(type: ENTITY, sortOrder: null, first: 1, conceptFilters: [{string: {like: $domain}, uniqueKey: "Entity::Domain"}]) {
-            count
-            edges {
-              node {
-                ... on Entity {
-                  id
-                  facts {
-                    value
-                    concept {
-                      name
-                      uniqueKey
-                    }
-                    option {
-                      name
-                      uniqueKey
-                    }
-                  }
-                  offices {
-                    id
-                    facts {
-                      concept {
-                        name
-                        uniqueKey
-                      }
-                      value
-                      option {
-                        name
-                        uniqueKey
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    `;
-    let response = await this.fetchData(query, 'https://graph.rc.hkst.io/', {domain});
-    let {
-      "data":{
-        "view":{
-          "search":{
-            "edges":[
-              {
-                "node":{
-                  "facts":factArray,
-                  "id": id,
-                  "offices":officeArray
-                }
-              }
-            ]
-          }
-        }
-      }
-    } = response;
-
-    facts["id"] = id;
-
-    factArray.forEach((fact) => {
-      const {
-        "concept": {"uniqueKey": uniqueKey, "name": name},
-        "option": option,
-        "value": value
-      } = fact;
-      if (uniqueKey == "Entity::Vertical") {
-        facts["Verticals"].push((option && option.name) || value);
-      } else {
-        facts[name] = value;
-      }
-    });
-
-    let headquarters = getHeadquarters(officeArray);
-
-    // Ignore non-headquarter offices
-    const officeFacts = (headquarters && headquarters["facts"]) || [];
-    officeFacts.forEach(officeFact => {
-      const {"concept": {"name": name}, "value": value} = officeFact;
-      facts[name] = value;
-    });
-    return facts;
-  }
-
-  fetchData(query, url, variables) {
-    let response = fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query,
-        variables
-      }),
-      referrerPolicy: 'origin'
-    })
-      .then(r => r.json());
-    return response;
   }
 }
 

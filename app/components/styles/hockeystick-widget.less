@@ -41,6 +41,7 @@
   font-family: Lato;
   font-style: normal;
   text-align: center;
+  flex: none;
 }
 
 .popup {
@@ -69,14 +70,11 @@
 
   font-size: @font-size-lg;
   font-weight: bold;
-  text-align: center;
 
   /* Gray / gray-10 */
   color: @black;
 
   /* Inside Auto Layout */
-  flex: none;
-  order: 1;
   margin: 0px 4px;
   z-index: 2;
 }
@@ -90,9 +88,6 @@
   color: @text-color;
 
   /* Inside Auto Layout */
-  flex: none;
-  order: 2;
-
   margin: 0px 4px;
   z-index: 2;
 }
@@ -106,8 +101,6 @@
   color: @text-color;
 
   /* Inside Auto Layout */
-  flex: none;
-  order: 2;
 
   margin-bottom: 16px;
   z-index: 2;
@@ -127,36 +120,25 @@
   padding-left: 0;
 
   flex: none;
-  order: 2;
 
   z-index: 2;
 }
 
 .vertical {
   display: inline-block;
-  border: 1px solid #E8E8E8;
-  box-sizing: border-box;
-  border-radius: 2px;
-  padding: 1px 8px;
-  text-align: center;
   text-overflow: ellipsis;
 
   display: inline;
-  text-align: center;
 }
 
 .entityDesc {
   position: static;
-
-  text-align: center;
 
   /* Gray / gray-9 */
   color: @text-color-secondary;
 
   /* Inside Auto Layout */
   flex: none;
-  order: 2;
-
   margin-bottom: 32px;
   z-index: 2;
 }
@@ -169,9 +151,7 @@
 
   /* Inside Auto Layout */
   margin-top: 20px;
-
   font-weight: bold;
-
   z-index: 2;
 }
 
