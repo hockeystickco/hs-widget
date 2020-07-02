@@ -1,4 +1,5 @@
 @import (css) url(https://fonts.googleapis.com/css?family=Lato);
+@import '~antd/lib/style/themes/default.less';
 
 #with-antd-styles::before,
 #with-antd-styles::after,
@@ -8,13 +9,17 @@
 }
 
 #with-antd-styles {
-  @import '~antd/lib/style/core/index.less';
-  @import '~antd/lib/style/themes/default.less';
+@import '~antd/lib/style/core/index.less';
 
   a.hsButton {
     font-weight: bold;
-    color: #FFFFFF;
-    background-color: #1890FF;
+    color: @white;
+    background-color: @primary-color;
+    transition: 0.3s;
+  }
+
+  a.hsButton:hover {
+    background-color: @primary-5;
   }
 }
 
@@ -72,7 +77,7 @@ div.ant-popover-arrow {
 
 
   /* Gray / gray-10 */
-  color: #000000;
+  color: @black;
 
   /* Inside Auto Layout */
   flex: none;
@@ -91,7 +96,7 @@ div.ant-popover-arrow {
   text-align: center;
 
   /* Gray / gray-7 */
-  color: #8C8C8C;
+  color: @text-color;
 
   /* Inside Auto Layout */
   flex: none;
@@ -111,7 +116,7 @@ div.ant-popover-arrow {
   text-align: center;
 
   /* Gray / gray-7 */
-  color: #8C8C8C;
+  color: @text-color;
 
   /* Inside Auto Layout */
   flex: none;
@@ -163,7 +168,7 @@ div.ant-popover-arrow {
   /* or 157% */
 
   /* Gray / gray-9 */
-  color: #262626;
+  color: @text-color-secondary;
 
   /* Inside Auto Layout */
   flex: none;
@@ -197,7 +202,7 @@ div.ant-popover-arrow {
 
 .background {
   opacity: 0;
-  background-color: #FFF;
+  background-color: @white;
   position: fixed;
   width: 100%;
   height: 100%;
