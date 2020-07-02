@@ -71,22 +71,10 @@ spl_autoload_register(function ($class) {
 function init() {
 	$wpr = Plugin::get_instance();
 	$hs_shortcode = Shortcode::get_instance();
-	$hs_admin = Admin::get_instance();
 	$hs_rest = Endpoint\Example::get_instance();
 }
 add_action( 'plugins_loaded', 'Hockeystick\\WPR\\init' );
 
-
-
-/**
- * Register the widget
- *
- * @since 1.0.0
- */
-function widget_init() {
-	return register_widget( new Widget );
-}
-add_action( 'widgets_init', 'Hockeystick\\WPR\\widget_init' );
 
 /**
  * Register activation and deactivation hooks

@@ -26,13 +26,6 @@ class HockeystickWidget extends React.Component {
     };
   }
 
-  // handleClickOutside = (e) => {
-  //   console.log('handleClickOutside');
-  //   this.setState({
-  //     visible: false
-  //   });
-  //  };
-
   handleVisibleChange = visible => {
     this.setState({
       visible: visible
@@ -112,35 +105,6 @@ class HockeystickWidget extends React.Component {
       );
     }
 
-    // const card = (
-    //   <Card
-    //     className='popup'>
-    //     <WidgetSkeleton loading={this.state.loading && !(this.state.error)}/>
-    //     <Error visible={this.state.error} imageSrc={this.props.wpObject.images + '/Warning.png'}/>
-    //     <Space direction='vertical' align='center' size={0}>
-    //       <Logo
-    //         src={'http://logo.hockeystick.co/' + encodeURIComponent(this.props.wpObject.atts.url) + '?size=' + 106}
-    //         placeholder={this.props.wpObject.images + '/Placeholder_Logo.png'}
-    //         visible={this.state.loading || this.state.error ? 0 : 1}/>
-    //       <EntityInfo className='entityName' content={this.state.facts["Operating Name"] || this.state.facts["Legal Name"]}/>
-    //       <EntityInfo className='entityType' content={this.normalizeType(this.state.facts["Organization Type"])}/>
-    //       <EntityInfo className='entityLocation' content={this.normalizeLocation(this.state.facts["Location"])}/>
-    //       <VerticalList
-    //         visible={this.state.facts['Verticals'].length && !noVerticals.includes(this.normalizeType(this.state.facts["Organization Type"])) ? 1 : 0}
-    //         verticals={this.state.facts['Verticals']}/>
-    //       <EntityInfo className='entityDesc' content={this.state.facts["Short Description"]}/>
-    //       <HSButton
-    //         className='hsButton'
-    //         href={`https://www.hockeystick.co/entities/${this.state.facts['id']}`}
-    //         visible={this.state.loading || this.state.error ? 0 : 1}/>
-    //     </Space>
-    //     <img
-    //       className={this.state.error ? 'hidden' : 'powered'}
-    //       src={this.props.wpObject.images + '/Powered_By_HS.png'}
-    //       style={{'marginTop': '20px'}}/>
-    //   </Card>
-    // );
-
     return (
       <div id='with-antd-styles' className='trigger' ref={this.ref}>
         <Popover
@@ -151,7 +115,7 @@ class HockeystickWidget extends React.Component {
               {...this.props}
             />
           }
-          placement='bottom'
+          placement='rightBottom'
           trigger='click'
           visible={this.state.visible}
           onVisibleChange={this.handleVisibleChange}
@@ -161,35 +125,6 @@ class HockeystickWidget extends React.Component {
         </Popover>
       </div>
     );
-
-
-    // return (
-    //   <>
-    //     <Text
-    //       className='trigger'
-    //       onClick={this.handleClick}
-    //       className='with-antd-styles'
-    //       >{this.props.content}
-    //       <Card className={this.state.visible ? 'card' : 'hidden'} onClick={(e) => {e.stopPropagation()}}>
-    //         <WidgetSkeleton loading={this.state.loading && !(this.state.error)}/>
-    //         {error}
-    //         <Space className={(this.state.loading || this.state.error) ? 'hidden' : ''} direction='vertical' align='center' size={0}>
-    //           <Logo
-    //             src={'http://logo.hockeystick.co/' + domain + '?size=' + 106}
-    //             placeholder={this.props.wpObject.images + '/Placeholder_Logo.png'}/>
-    //           {entityName}
-    //           {entityType}
-    //           {entityLocation}
-    //           {entityVerticals}
-    //           {entityDesc}
-    //           {hsButton}
-    //         </Space>
-    //         {powered}
-    //       </Card>
-    //     </Text>
-    //     <div className={this.state.visible ? 'background' : 'hidden'}></div>
-    //   </>
-    // );
   }
 
   async fetchCompanyInfo(domain) {
@@ -217,10 +152,12 @@ class HockeystickWidget extends React.Component {
                     facts {
                       concept {
                         name
+                        uniqueKey
                       }
                       value
                       option {
                         name
+                        uniqueKey
                       }
                     }
                   }
@@ -308,9 +245,9 @@ class HockeystickWidget extends React.Component {
           fact => {
             return fact &&
             fact.concept &&
-            fact.concept.name &&
+            fact.concept.uniqueKey &&
             fact.value &&
-            fact.concept.name == 'Office Type' &&
+            fact.concept.uniqueKey == 'Office::OfficeType' &&
             fact.value == 'OfficeType::Headquarter';
           }
         );
