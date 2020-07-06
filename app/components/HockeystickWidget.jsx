@@ -14,9 +14,9 @@ import Error from './Error.jsx';
 import HSButton from './HSButton.jsx';
 import VerticalList from './VerticalList.jsx';
 
-const noVerticals = ["Government", "Investor", "Accelerator / Incubator"];
+const noVerticals = ['Government', 'Investor', 'Accelerator / Incubator'];
 
-const normalizeLocation = uniqueKey => {
+const normalizeLocation = (uniqueKey) => {
   if (!uniqueKey) {
     return null;
   }
@@ -24,49 +24,73 @@ const normalizeLocation = uniqueKey => {
   const province = uniqueKey.match(/^[^:]+(::[^:]+){2}/)[0];
   const country = uniqueKey.match(/^[^:]+(::[^:]+){1}/)[0];
 
-  return `${city ? en[city] + ", " : ""}${province ? en[province] + ", " : ""}${country ? en[country] : ""}`;
-}
+  return `${city ? en[city] + ', ' : ''}${province ? en[province] + ', ' : ''}${
+    country ? en[country] : ''
+  }`;
+};
 
-const normalizeType = uniqueKey => {
+const normalizeType = (uniqueKey) => {
   if (!uniqueKey) {
     return null;
   }
   return en[uniqueKey.match(/^[^:]+::[^:]+/)[0]] || null;
-}
+};
 
-const WidgetCard = props => {
+const WidgetCard = (props) => {
   return (
-    <Card
-      className='popup'>
-      <WidgetSkeleton loading={props.loading && !(props.error)}/>
-      <Error visible={props.error} imageSrc={props.wpObject.images + '/Warning.png'}/>
-      <Space direction='vertical' align='center' size={0}>
+    <Card className="popup">
+      <WidgetSkeleton loading={props.loading && !props.error} />
+      <Error visible={props.error} imageSrc={props.wpObject.images + '/Warning.png'} />
+      <Space direction="vertical" align="center" size={0}>
         <Logo
-          src={'http://logo.hockeystick.co/' + encodeURIComponent(props.wpObject.atts.url) + '?size=' + 106}
+          src={
+            'http://logo.hockeystick.co/' +
+            encodeURIComponent(props.wpObject.atts.url) +
+            '?size=' +
+            106
+          }
           placeholder={props.wpObject.images + '/Placeholder_Logo.png'}
-          visible={props.loading || props.error ? 0 : 1}/>
-        <EntityInfo className='entityName' content={props.facts["Operating Name"] || props.facts["Legal Name"]}/>
-        <EntityInfo className='entityType' content={normalizeType(props.facts["Organization Type"])}/>
-        <EntityInfo className='entityLocation' content={normalizeLocation(props.facts["Location"])}/>
+          visible={props.loading || props.error ? 0 : 1}
+        />
+        <EntityInfo
+          className="entityName"
+          content={props.facts['Operating Name'] || props.facts['Legal Name']}
+        />
+        <EntityInfo
+          className="entityType"
+          content={normalizeType(props.facts['Organization Type'])}
+        />
+        <EntityInfo
+          className="entityLocation"
+          content={normalizeLocation(props.facts['Location'])}
+        />
         <VerticalList
-          visible={props.facts['Verticals'].length && !noVerticals.includes(normalizeType(props.facts["Organization Type"])) ? 1 : 0}
-          verticals={props.facts['Verticals']}/>
-        <EntityInfo className='entityDesc' content={props.facts["Short Description"]}/>
+          visible={
+            props.facts['Verticals'].length &&
+            !noVerticals.includes(normalizeType(props.facts['Organization Type']))
+              ? 1
+              : 0
+          }
+          verticals={props.facts['Verticals']}
+        />
+        <EntityInfo className="entityDesc" content={props.facts['Short Description']} />
         <HSButton
           href={`https://www.hockeystick.co/entities/${props.facts['id']}`}
-          className='hsButton'
-          visible={props.loading || props.error ? 0 : 1}/>
+          className="hsButton"
+          visible={props.loading || props.error ? 0 : 1}
+        />
       </Space>
       <img
         className={props.error ? 'hidden' : 'powered'}
         src={props.wpObject.images + '/Powered_By_HS.png'}
-        style={{'marginTop': '20px'}}/>
+        style={{ marginTop: '20px' }}
+      />
     </Card>
   );
-}
+};
 
 async function fetchCompanyInfo(domain) {
-  let facts = {"Verticals": []};
+  let facts = { Verticals: [] };
   const query = `
     query SearchQuery ($domain: String) {
       view(datasets: ["public"]) {
@@ -108,35 +132,31 @@ async function fetchCompanyInfo(domain) {
       }
     }
   `;
-  let response = await fetchData(query, 'https://graph.rc.hkst.io/', {domain});
+  let response = await fetchData(query, 'https://graph.rc.hkst.io/', { domain });
   let {
-    "data":{
-      "view":{
-        "search":{
-          "edges":[
+    data: {
+      view: {
+        search: {
+          edges: [
             {
-              "node":{
-                "facts":factArray,
-                "id": id,
-                "offices":officeArray
-              }
-            }
-          ]
-        }
-      }
-    }
+              node: { facts: factArray, id: id, offices: officeArray },
+            },
+          ],
+        },
+      },
+    },
   } = response;
 
-  facts["id"] = id;
+  facts['id'] = id;
 
   factArray.forEach((fact) => {
     const {
-      "concept": {"uniqueKey": uniqueKey, "name": name},
-      "option": option,
-      "value": value
+      concept: { uniqueKey: uniqueKey, name: name },
+      option: option,
+      value: value,
     } = fact;
-    if (uniqueKey == "Entity::Vertical") {
-      facts["Verticals"].push((option && option.name) || value);
+    if (uniqueKey == 'Entity::Vertical') {
+      facts['Verticals'].push((option && option.name) || value);
     } else {
       facts[name] = value;
     }
@@ -145,9 +165,12 @@ async function fetchCompanyInfo(domain) {
   let headquarters = getHeadquarters(officeArray);
 
   // Ignore non-headquarter offices
-  const officeFacts = (headquarters && headquarters["facts"]) || [];
-  officeFacts.forEach(officeFact => {
-    const {"concept": {"name": name}, "value": value} = officeFact;
+  const officeFacts = (headquarters && headquarters['facts']) || [];
+  officeFacts.forEach((officeFact) => {
+    const {
+      concept: { name: name },
+      value: value,
+    } = officeFact;
     facts[name] = value;
   });
   return facts;
@@ -161,38 +184,37 @@ function fetchData(query, url, variables) {
     },
     body: JSON.stringify({
       query,
-      variables
+      variables,
     }),
-    referrerPolicy: 'origin'
-  })
-    .then(r => r.json());
+    referrerPolicy: 'origin',
+  }).then((r) => r.json());
   return response;
 }
 
 // Takes an array of structures representing offices, and returns one with
 // "OfficeType::Headquarter" as its value for "Office Type", if one exists.
-const getHeadquarters = offices => {
+const getHeadquarters = (offices) => {
   if (!offices) {
     return null;
   }
-  return offices.find(
-    office => {
+  return (
+    offices.find((office) => {
       if (!office.facts) {
         return false;
       }
-      return office.facts.find(
-        fact => {
-          return fact &&
+      return office.facts.find((fact) => {
+        return (
+          fact &&
           fact.concept &&
           fact.concept.uniqueKey &&
           fact.value &&
           fact.concept.uniqueKey == 'Office::OfficeType' &&
-          fact.value == 'OfficeType::Headquarter';
-        }
-      );
-    }
-  ) || null;
-}
+          fact.value == 'OfficeType::Headquarter'
+        );
+      });
+    }) || null
+  );
+};
 
 class HockeystickWidget extends React.Component {
   constructor(props) {
@@ -202,62 +224,59 @@ class HockeystickWidget extends React.Component {
       loading: true,
       visible: false,
       error: false,
-      facts: {"Verticals": []},
+      facts: { Verticals: [] },
     };
   }
 
-  handleVisibleChange = visible => {
+  handleVisibleChange = (visible) => {
     this.setState({
-      visible: visible
+      visible: visible,
     });
 
     if (this.state.loading) {
-      fetchCompanyInfo(encodeURIComponent(this.props.wpObject.atts.url))
-        .then(
-          (result) => {
-            this.setState({
-              loading: false,
-              facts: result
-            });
-          },
-          (error) => {
-            console.log(error);
-            this.setState({
-              error: true
-            });
-          }
-        );
+      fetchCompanyInfo(encodeURIComponent(this.props.wpObject.atts.url)).then(
+        (result) => {
+          this.setState({
+            loading: false,
+            facts: result,
+          });
+        },
+        (error) => {
+          console.log(error);
+          this.setState({
+            error: true,
+          });
+        }
+      );
     }
   };
-
 
   render() {
     return (
       <>
-        <div id='with-antd-styles' className='trigger' ref={this.ref}>
+        <div id="with-antd-styles" className="trigger" ref={this.ref}>
           <Popover
-            overlayClassName='no-padding'
+            overlayClassName="no-padding"
             content={
               <ErrorBoundary imgSrc={this.props.wpObject.images + '/Warning.png'}>
-                <WidgetCard
-                  {...this.state}
-                  {...this.props}
-                />
+                <WidgetCard {...this.state} {...this.props} />
               </ErrorBoundary>
             }
-            placement='rightBottom'
-            trigger='click'
+            placement="rightBottom"
+            trigger="click"
             visible={this.state.visible}
             onVisibleChange={this.handleVisibleChange}
-            getPopupContainer={() => {return this.ref.current}}
+            getPopupContainer={() => {
+              return this.ref.current;
+            }}
           >
             <Text underline>{this.props.wpObject.content}</Text>
           </Popover>
         </div>
-        <div className={this.state.visible ? 'background' : 'hidden'}/>
+        <div className={this.state.visible ? 'background' : 'hidden'} />
       </>
     );
   }
 }
 
-export default (HockeystickWidget);
+export default HockeystickWidget;

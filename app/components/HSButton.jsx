@@ -8,13 +8,9 @@ export default class HSButton extends React.Component {
     }
 
     return (
-      <Button
-        type='primary'
-        size='large'
-        target='_blank'
-        {...this.props}>
+      <Button type="primary" size="large" target="_blank" {...this.props}>
         View Hockeystick Profile
       </Button>
-    )
+    );
   }
 }

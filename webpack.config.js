@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = (env, argv) => {
-  let production = argv.mode === 'production'
+  let production = argv.mode === 'production';
 
   return {
     entry: {
@@ -17,11 +17,14 @@ module.exports = (env, argv) => {
     devtool: production ? '' : 'source-map',
 
     plugins: [
-      new webpack.NormalModuleReplacementPlugin( /node_modules\/antd\/lib\/style\/index\.less/, path.resolve(__dirname, './app/components/styles/hockeystick-widget.less') )
+      new webpack.NormalModuleReplacementPlugin(
+        /node_modules\/antd\/lib\/style\/index\.less/,
+        path.resolve(__dirname, './app/components/styles/hockeystick-widget.less')
+      ),
     ],
 
     resolve: {
-      extensions: [".js", ".jsx", ".json"],
+      extensions: ['.js', '.jsx', '.json'],
     },
 
     module: {
@@ -33,7 +36,7 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.css$/,
-          use: [ 'style-loader', 'css-loader' ]
+          use: ['style-loader', 'css-loader'],
         },
         {
           test: /\.(png|jpe?g|gif)$/i,
@@ -49,17 +52,17 @@ module.exports = (env, argv) => {
             'style-loader',
             'css-loader',
             {
-              loader: "less-loader",
+              loader: 'less-loader',
               options: {
                 javascriptEnabled: true,
                 modifyVars: {
                   'font-family': "'Lato', sans-serif",
-                }
-              }
-            }
+                },
+              },
+            },
           ],
         },
       ],
     },
   };
-}
+};

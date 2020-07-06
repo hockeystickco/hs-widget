@@ -5,7 +5,7 @@ export default class Logo extends React.Component {
     super(props);
     this.state = {
       src: props.src,
-      error: false
+      error: false,
     };
   }
 
@@ -13,25 +13,18 @@ export default class Logo extends React.Component {
     if (!this.state.error) {
       this.setState({
         src: this.props.placeholder,
-        error: true
+        error: true,
       });
     }
-  }
+  };
 
   render() {
-    const {src, ...props} = this.props;
+    const { src, ...props } = this.props;
 
     if (!this.props.visible) {
       return null;
     }
-    
-    return (
-      <img
-        className='logo'
-        src={this.state.src}
-        onError={this.onError}
-        {...props}
-      />
-    );
+
+    return <img className="logo" src={this.state.src} onError={this.onError} {...props} />;
   }
 }
