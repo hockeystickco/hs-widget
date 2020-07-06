@@ -44,18 +44,18 @@ const WidgetCard = props => {
         <Logo
           src={'http://logo.hockeystick.co/' + encodeURIComponent(props.wpObject.atts.url) + '?size=' + 106}
           placeholder={props.wpObject.images + '/Placeholder_Logo.png'}
-          visible={!(props.loading || props.error)}/>
+          visible={props.loading || props.error ? 0 : 1}/>
         <EntityInfo className='entityName' content={props.facts["Operating Name"] || props.facts["Legal Name"]}/>
         <EntityInfo className='entityType' content={normalizeType(props.facts["Organization Type"])}/>
         <EntityInfo className='entityLocation' content={normalizeLocation(props.facts["Location"])}/>
         <VerticalList
           visible={props.facts['Verticals'].length && !noVerticals.includes(normalizeType(props.facts["Organization Type"]))}
           verticals={props.facts['Verticals']}/>
-        <EntityInfo className='entityDesc' content={props.facts["Short Description"]}/>
+        <EntityInfo className='entityDesc' content={props.facts["Short Description"] && (props.facts["Short Description"].substring(0, 140) + (props.facts["Short Description"].length > 140 ? "..." : ""))}/>
         <HSButton
           href={`https://www.hockeystick.co/entities/${props.facts['id']}`}
           className='hsButton'
-          visible={!(props.loading || props.error)}/>
+          visible={props.loading || props.error ? 0 : 1}/>
       </Space>
       <img
         className={props.error ? 'hidden' : 'powered'}
@@ -254,7 +254,6 @@ class HockeystickWidget extends React.Component {
             <Text underline>{this.props.wpObject.content}</Text>
           </Popover>
         </div>
-        <div className={this.state.visible ? 'background' : 'hidden'}/>
       </>
     );
   }
