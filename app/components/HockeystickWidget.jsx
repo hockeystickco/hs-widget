@@ -14,6 +14,9 @@ import Error from './Error.jsx';
 import HSButton from './HSButton.jsx';
 import VerticalList from './VerticalList.jsx';
 
+var controller = new AbortController();
+var signal = controller.signal;
+
 const noVerticals = ["Government", "Investor", "Accelerator / Incubator"];
 
 const normalizeLocation = uniqueKey => {
@@ -163,7 +166,8 @@ function fetchData(query, url, variables) {
       query,
       variables
     }),
-    referrerPolicy: 'origin'
+    referrerPolicy: 'origin',
+    signal: signal
   })
     .then(r => r.json());
   return response;
@@ -211,7 +215,14 @@ class HockeystickWidget extends React.Component {
       visible: visible
     });
 
-    if (this.state.loading) {
+    // Abort the request if the Popover is closed
+    if (!visible) {
+      controller.abort();
+      controller = new AbortController();
+      signal = controller.signal;
+    }
+
+    if (this.state.loading && visible) {
       fetchCompanyInfo(encodeURIComponent(this.props.wpObject.atts.url))
         .then(
           (result) => {
@@ -220,11 +231,13 @@ class HockeystickWidget extends React.Component {
               facts: result
             });
           },
-          (error) => {
-            console.log(error);
-            this.setState({
-              error: true
-            });
+          (e) => {
+            console.log(e);
+            if (e.name != "AbortError") {
+              this.setState({
+                error: true
+              });
+            }
           }
         );
     }
