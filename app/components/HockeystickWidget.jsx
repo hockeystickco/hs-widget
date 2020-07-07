@@ -266,6 +266,7 @@ class HockeystickWidget extends React.Component {
           >
             <Text underline>{this.props.wpObject.content}</Text>
           </Popover>
+          <div className={this.state.visible ? 'background' : 'hidden'}/>
         </div>
       </>
     );
