@@ -37,6 +37,10 @@ const normalizeType = uniqueKey => {
   return en[uniqueKey.match(/^[^:]+::[^:]+/)[0]] || null;
 }
 
+const normalizeUrl = url => {
+  return encodeURIComponent(url.replace(/^(https?:\/\/)?(www\.)?/, '').replace(/\/.*$/, ''));
+}
+
 const WidgetCard = props => {
   return (
     <Card
@@ -45,7 +49,7 @@ const WidgetCard = props => {
       <Error visible={props.error} imageSrc={props.wpObject.images + '/Warning.png'}/>
       <Space direction='vertical' align='center' size={0}>
         <Logo
-          src={'http://logo.hockeystick.co/' + encodeURIComponent(props.wpObject.atts.url) + '?size=' + 106}
+          src={'http://logo.hockeystick.co/' + normalizeUrl(props.wpObject.atts.url) + '?size=' + 106}
           placeholder={props.wpObject.images + '/Placeholder_Logo.png'}
           visible={props.loading || props.error ? 0 : 1}/>
         <EntityInfo className='entityName' content={props.facts["Operating Name"] || props.facts["Legal Name"]}/>
@@ -223,7 +227,7 @@ class HockeystickWidget extends React.Component {
     }
 
     if (this.state.loading && visible) {
-      fetchCompanyInfo(encodeURIComponent(this.props.wpObject.atts.url))
+      fetchCompanyInfo(normalizeUrl(this.props.wpObject.atts.url))
         .then(
           (result) => {
             this.setState({
@@ -265,6 +269,7 @@ class HockeystickWidget extends React.Component {
             getPopupContainer={() => {return this.ref.current}}
           >
             <Text underline>{this.props.wpObject.content}</Text>
+            <img src={this.props.wpObject.images + '/Icon.png'} style={{width: "10px", display: "inline", marginLeft: "5px"}}/>
           </Popover>
           <div className={this.state.visible ? 'background' : 'hidden'}/>
         </div>
