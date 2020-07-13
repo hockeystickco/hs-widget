@@ -1,11 +1,14 @@
 {
-  "presets":[
+  "presets": [
     "@babel/preset-react",
-    [ "@babel/preset-env", {
-      "targets": {
-        "browsers": "> 2%"
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": "> 2%"
+        }
       }
-    }]
+    ]
   ],
   "plugins": [
     "@babel/proposal-class-properties",
@@ -13,7 +16,7 @@
       "import",
       {
         "libraryName": "antd",
-        "style": true,
+        "style": true
       }
     ]
   ]
