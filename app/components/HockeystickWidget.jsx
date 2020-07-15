@@ -269,7 +269,7 @@ class HockeystickWidget extends React.Component {
             getPopupContainer={() => {return this.ref.current}}
           >
             <Text underline>{this.props.wpObject.content}</Text>
-            <img src={this.props.wpObject.images + '/Icon.png'} style={{width: "10px", display: "inline", marginLeft: "5px"}}/>
+            <img src={this.props.wpObject.images + '/info-gold.png'} style={{width: "16px", display: "inline", marginLeft: "3px"}}/>
           </Popover>
           <div className={this.state.visible ? 'background' : 'hidden'}/>
         </div>
