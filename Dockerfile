@@ -1,7 +1,7 @@
 FROM node AS webpack
 WORKDIR /webpack/
-COPY package.json yarn.lock
-RUN yarn install --pure-lockfile
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 COPY . ./
 RUN yarn prod
 
