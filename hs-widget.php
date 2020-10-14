@@ -23,7 +23,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'WP_REACTIVATE_VERSION', '1.0.2' );
+define( 'HS_WIDGET_VERSION', '1.0.2' );
 
 
 /**
@@ -71,13 +71,5 @@ spl_autoload_register(function ($class) {
 function init() {
 	$wpr = Plugin::get_instance();
 	$hs_shortcode = Shortcode::get_instance();
-	$hs_rest = Endpoint\Example::get_instance();
 }
 add_action( 'plugins_loaded', 'Hockeystick\\WPR\\init' );
-
-
-/**
- * Register activation and deactivation hooks
- */
-register_activation_hook( __FILE__, array( 'Hockeystick\\WPR\\Plugin', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'Hockeystick\\WPR\\Plugin', 'deactivate' ) );

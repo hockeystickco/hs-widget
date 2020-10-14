@@ -1,5 +1,5 @@
 {
-  "name": "hockeystick-widget",
+  "name": "hs-widget",
   "version": "1.0.0",
   "description": "Widget that displays a company's information from Hockeystick.",
   "main": "index.js",

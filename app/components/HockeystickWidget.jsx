@@ -3,7 +3,7 @@ import { Card, Skeleton, Tag, Button, Typography, Space, Popover } from 'antd';
 
 const { Text } = Typography;
 
-import './styles/hockeystick-widget.less';
+import './styles/hs-widget.less';
 
 import en from './data/en.json';
 import ErrorBoundary from './ErrorBoundary.jsx';

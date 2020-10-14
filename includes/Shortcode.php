@@ -53,7 +53,7 @@ class Shortcode {
 		$this->plugin_slug = $plugin->get_plugin_slug();
 		$this->version = $plugin->get_plugin_version();
 
-		add_shortcode( 'hockeystick-widget', array( $this, 'shortcode' ) );
+		add_shortcode( 'hs-widget', array( $this, 'shortcode' ) );
 	}
 
 
@@ -89,11 +89,11 @@ class Shortcode {
 			'atts'				=> $atts,
 			'content'			=> $content,
 			'images'				=> plugins_url('assets/images', dirname( __FILE__ ))
-		), $atts, 'hockeystick-widget' );
+		), $atts, 'hs-widget' );
 
 		wp_localize_script( $this->plugin_slug . '-shortcode-script', $object_name, $object );
 
-		$shortcode = '<span class="hockeystick-widget-shortcode" data-object-id="' . $object_name . '"></span>';
+		$shortcode = '<span class="hs-widget-shortcode" data-object-id="' . $object_name . '"></span>';
 		return $shortcode;
 	}
 }
