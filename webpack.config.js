@@ -19,7 +19,7 @@ module.exports = (env, argv) => {
     plugins: [
       new webpack.NormalModuleReplacementPlugin(
         /node_modules\/antd\/lib\/style\/index\.less/,
-        path.resolve(__dirname, './app/components/styles/hockeystick-widget.less')
+        path.resolve(__dirname, './app/components/styles/hs-widget.less')
       ),
     ],
 

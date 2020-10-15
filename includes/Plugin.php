@@ -6,7 +6,7 @@
  * @package   Hockeystick
  * @author    Hockeystick
  * @license   GPL-3.0
- * @link      https://gopangolin.com
+ * @link      https://www.hockeystick.co/
  * @copyright 2020 Hockeystick
  */
 
@@ -26,7 +26,7 @@ class Plugin {
 	 *
 	 * @var      string
 	 */
-	protected $plugin_slug = 'hockeystick-widget';
+	protected $plugin_slug = 'hs-widget';
 
 	/**
 	 * Instance of this class.
@@ -43,7 +43,7 @@ class Plugin {
 	 * @since     1.0.0
 	 */
 	private function __construct() {
-		$this->plugin_version = WP_REACTIVATE_VERSION;
+		$this->plugin_version = HS_WIDGET_VERSION;
 	}
 
 	/**
@@ -67,24 +67,6 @@ class Plugin {
 	public function get_plugin_version() {
 		return $this->plugin_version;
 	}
-
-	/**
-	 * Fired when the plugin is activated.
-	 *
-	 * @since    1.0.0
-	 */
-	public static function activate() {
-		add_option( 'hs_example_setting' );
-	}
-
-	/**
-	 * Fired when the plugin is deactivated.
-	 *
-	 * @since    1.0.0
-	 */
-	public static function deactivate() {
-	}
-
 
 	/**
 	 * Return an instance of this class.
